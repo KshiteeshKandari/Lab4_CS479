@@ -2,17 +2,24 @@ String[] inputPrompts = {"Step Length", "Stride Length", "Step Width", "Step Cou
 String[] inputValues = new String[inputPrompts.length];
 boolean[] inputFieldsSelected = new boolean[inputPrompts.length];
 int activeField = -1;
+PImage input_bg;
+PImage left_arrow;
+PImage left_arrow2;
 
 
 void input_setup(){
   home_icon = loadImage("home.png");
+  left_arrow = loadImage("lf1.png");
+  left_arrow2 = loadImage("lf2.png");
   textSize(16);
   for (int i = 0; i < inputValues.length; i++) {
     inputValues[i] = ""; // Initialize input fields with empty strings
     inputFieldsSelected[i] = false;
   }
+  input_bg = loadImage("input_bg.png");
 }
 void drawInputPage() {
+  background(input_bg);
     textSize(18);
    textAlign(LEFT, CENTER);
   image(home_icon,750,10,50,50);
@@ -29,7 +36,7 @@ void drawInputPage() {
   }
   
   // Instructions for the user
-  text("Click on a field to enter the corresponding data. Press ENTER to confirm each.", 50, 300);
+  text("Click on a field to enter the corresponding data. Press the icon to go to heat maps.", 50, 300);
   
   // Proceed button
   drawProceedButton();
@@ -46,13 +53,14 @@ void drawProceedButton() {
   }
   
   if (allFilled) {
-    fill(0, 255, 0); // Green color for proceed button
+    image(left_arrow2,65,345,50,50);
+    //text("Proceed", 55, 365);
   } else {
-    fill(200); // Grey color indicates that the button is not active
+    image(left_arrow,65,345,50,50);
   }
-  rect(50, 350, 100, 30);
-  fill(0);
-  text("Proceed", 55, 365);
+  //rect(50, 350, 100, 30);
+  //fill(0);
+  
 }
 
 
