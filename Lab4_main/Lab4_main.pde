@@ -12,6 +12,7 @@ void setup() {
     inputValues[i] = ""; // Initialize input fields with empty strings
     inputFieldsSelected[i] = false;
   }
+  heat_map_setup();
 }
 
 void draw() {
