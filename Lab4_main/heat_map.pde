@@ -10,7 +10,7 @@ PImage img;
 void heat_map_setup() {
   
   img = loadImage("foot.png");
-
+  home_icon = loadImage("home.png");
   // Initialize the FSR values for the heatmap for each sensor
   int sensors = 4;
   fsrValues = new int[sensors][20]; // More sensor points for a smoother gradient
@@ -29,6 +29,7 @@ void heat_map_setup() {
 
 void drawHeatmapPage() {
   background(img);
+  image(home_icon,750,10,50,50);
 
   // Simulate live FSR values updating for each sensor
   for (int j = 0; j < fsrValues.length; j++) {
