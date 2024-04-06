@@ -1,4 +1,4 @@
-String[] inputPrompts = {"Step Length", "Stride Length", "Step Width", "Step Count"};
+String[] inputPrompts = {"Step Length", "Stride Length"};
 String[] inputValues = new String[inputPrompts.length];
 boolean[] inputFieldsSelected = new boolean[inputPrompts.length];
 int activeField = -1;
