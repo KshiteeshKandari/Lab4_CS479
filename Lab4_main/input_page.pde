@@ -47,7 +47,8 @@ void drawInputPage() {
 //}
 if (HEEL > threshold && !stepDetected) {
     if (millis() - lastStepTime > debounceTime) { // Debounce to prevent multiple counts for one step
-      stepCount++; // Increment the step count
+      stepCount++;
+      stepCount++;// Increment the step count
       print("Step detected!");
       print("Total steps: ");
       stepDetected = true; // Set the step detected flag
