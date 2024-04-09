@@ -3,18 +3,55 @@ int MF;
 int LF;
 int MM;
 int HEEL;
-
+String current;
 int currentPage = 3; // 1 for input page, 2 for heatmap page, 4 for special/running page
 PImage home_icon;
 
 Serial myPort;
 void setup() {
+  String portName = Serial.list()[0];
+  print(Serial.list());
+  myPort = new Serial(this, portName, 115200);
+  myPort.bufferUntil('\n');
+  
   size(800, 600);
   textAlign(LEFT, CENTER);
   input_setup();
   heat_map_setup();
   running_setup();
   home_setup();
+}
+void serialEvent(Serial myPort){
+  String tempVal = myPort.readStringUntil('\n');
+  if (tempVal != null){
+    String[] values = split(tempVal, ' ');
+    MF = int(values[0]);
+    LF = int(values[1]);
+    MM = int(values[2]);
+    HEEL = int(values[3]);
+    
+    float MFP = ((MM + MF) * 100)/(MM + MF + LF + HEEL + 0.001);
+    println(MFP); 
+    profile(MFP);
+  }
+}
+
+void profile(float x){
+  if (x <= 5){
+    current = "Walking on the heel";
+  }
+  else if (x > 5 && x < 43){
+    current = "In-toeing";
+  }
+  else if (x >= 43 && x <= 57){
+    current = "Normal Gait";
+  }
+  else if (x > 57 && x < 95){
+    current = "Out-toeing";
+  }
+  else {
+  current = "Tiptoeing";
+  }
 }
 
 void draw() {
@@ -23,7 +60,7 @@ void draw() {
   if (currentPage == 1) {
     drawInputPage();
   } else if (currentPage == 2) {
-    drawHeatmapPage();
+    drawHeatmapPage(current);
   }
   else if (currentPage == 3){
     home_draw();
@@ -80,17 +117,4 @@ void mousePressed() {
   if (mouseX >= 750 && mouseX <= 800 && mouseY >= 10 && mouseY <= 60) {
     currentPage = 3; // Home icon clicked
   }
-}
-
-
-void serialEvent(Serial myPort){
-  String tempVal = myPort.readStringUntil('\n');
-  if (tempVal != null){
-    String[] values = split(tempVal, ' ');
-    MF = int(values[0]);
-    LF = int(values[1]);
-    MM = int(values[2]);
-    HEEL = int(values[3]);
-  }
-  
 }

@@ -1,6 +1,6 @@
 
 int minFSRValue = 0; // Minimum expected value for FSR input
-int maxFSRValue = 1000; // Maximum expected value for FSR input
+int maxFSRValue = 100; // Maximum expected value for FSR input
 int heatmapDiameter; // Diameter of each individual heatmap
 int[][] fsrValues; // 2D Array to store FSR values for each sensor
 ArrayList<ArrayList<Integer>> fsrHistory; // To store a history of values for drawing the graphs
@@ -27,10 +27,14 @@ void heat_map_setup() {
   frameRate(10); // Reduce the frame rate to make it less flickery
 }
 
-void drawHeatmapPage() {
+void drawHeatmapPage(String current) {
   background(img);
   image(home_icon,750,10,50,50);
 
+  textAlign(CENTER, TOP);
+  fill(255);
+  textSize(20);
+  text(current, width / 2, 10); 
 
   // Update fsrValues with actual sensor readings
   fsrValues[0][fsrValues[0].length - 1] = MF; // Most recent MF value
@@ -41,14 +45,14 @@ void drawHeatmapPage() {
   //
   // Simulate live FSR values updating for each sensor
   for (int j = 0; j < fsrValues.length; j++) {
-    int avgValue = 0; // Calculate average for a smoother graph
-    //for (int i = 0; i < fsrValues[j].length; i++) {
-    //  //fsrValues[j][i] = (int)random(minFSRValue, maxFSRValue + 1); // Random values within the expected range
-    //  avgValue += fsrValues[j][i];
-    //}
-    for (int value : fsrValues[j]) {
-      avgValue += value;
+    int avgValue = 500; // Calculate average for a smoother graph
+    for (int i = 0; i < fsrValues[j].length; i++) {
+      //fsrValues[j][i] = (int)random(minFSRValue, maxFSRValue + 1); // Random values within the expected range
+      avgValue += fsrValues[j][i];
     }
+    //for (int value : fsrValues[j]) {
+    //  avgValue += value;
+    //}
     avgValue /= fsrValues[j].length;
     fsrHistory.get(j).add(avgValue); // Add average value to history
     if (fsrHistory.get(j).size() > 50) { // Limit history size to keep the graph manageable
@@ -82,36 +86,74 @@ void drawCircularHeatmap(int[] sensorValues, float centerX, float centerY, int d
   }
 }
 
+//void drawLineGraph(ArrayList<Integer> values, float startX, float startY) {
+//  float graphWidth = width / 5; // Width of the graph
+//  float graphHeight = height / 6; // Height of the graph
+//  stroke(0);
+  
+//  // Draw Y-axis
+//  line(startX, startY, startX, startY + graphHeight);
+//  // Draw X-axis
+//  line(startX, startY + graphHeight, startX + graphWidth, startY + graphHeight);
+  
+//  // Draw graph line
+//  noFill();
+//  beginShape();
+//  for (int i = 0; i < values.size(); i++) {
+//    float x = map(i, 0, values.size(), startX, startX + graphWidth);
+//    float y = map(values.get(i), minFSRValue, maxFSRValue, startY + graphHeight, startY);
+//    vertex(x, y);
+//  }
+//  endShape();
+  
+//  // Label Y-axis with min and max FSR values
+//  textSize(10);
+//  fill(0);
+//  textAlign(RIGHT, CENTER);
+//  text(minFSRValue, startX - 5, startY + graphHeight);
+//  text(maxFSRValue, startX - 5, startY);
+  
+//  // Label X-axis with "Time" and draw a simple indication of the start and end points
+//  textAlign(CENTER, TOP);
+//  text("Start", startX, startY + graphHeight + 5);
+//  text("Now", startX + graphWidth, startY + graphHeight + 5);
+//  text("FSR Value", startX - 20, startY + graphHeight / 2); // Additional label for Y-axis
+//}
 void drawLineGraph(ArrayList<Integer> values, float startX, float startY) {
   float graphWidth = width / 5; // Width of the graph
   float graphHeight = height / 6; // Height of the graph
   stroke(0);
-  
+
+  // Manual computation of min and max values in the list
+  int currentMinValue = minFSRValue; // Start with the absolute min
+  int currentMaxValue = maxFSRValue; // Start with the absolute max
+
   // Draw Y-axis
   line(startX, startY, startX, startY + graphHeight);
   // Draw X-axis
   line(startX, startY + graphHeight, startX + graphWidth, startY + graphHeight);
-  
+
   // Draw graph line
   noFill();
   beginShape();
   for (int i = 0; i < values.size(); i++) {
     float x = map(i, 0, values.size(), startX, startX + graphWidth);
-    float y = map(values.get(i), minFSRValue, maxFSRValue, startY + graphHeight, startY);
+    // Use the overall min and max values for scaling
+    float y = map(values.get(i), currentMinValue, currentMaxValue, startY + graphHeight, startY);
     vertex(x, y);
   }
   endShape();
-  
+
   // Label Y-axis with min and max FSR values
-  textSize(10);
-  fill(0);
-  textAlign(RIGHT, CENTER);
-  text(minFSRValue, startX - 5, startY + graphHeight);
-  text(maxFSRValue, startX - 5, startY);
-  
+  //textSize(10);
+  //fill(0);
+  //textAlign(RIGHT, CENTER);
+  //text(currentMinValue, startX - 5, startY + graphHeight);
+  //text(currentMaxValue, startX - 5, startY);
+
   // Label X-axis with "Time" and draw a simple indication of the start and end points
   textAlign(CENTER, TOP);
   text("Start", startX, startY + graphHeight + 5);
   text("Now", startX + graphWidth, startY + graphHeight + 5);
-  text("FSR Value", startX - 20, startY + graphHeight / 2); // Additional label for Y-axis
+  text("Pressure", startX - 60, startY + graphHeight / 2); // Adjust for visibility
 }
