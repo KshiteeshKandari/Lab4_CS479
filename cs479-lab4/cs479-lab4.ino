@@ -1,3 +1,10 @@
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+
+Adafruit_MPU6050 mpu;
+
+
 // change these 4 depending on pins used (Tyler: 2,3,1,0)
 int MF_Pin = 2; //MF, top left
 int LF_Pin = 3; //LF, top right
@@ -30,11 +37,38 @@ const int HEEL_LED_Pin = 11; // LED pin for HEEL
 
 
 void setup() {
+  //fsr
   Serial.begin(115200);
   pinMode(MF_LED_Pin, OUTPUT);
   pinMode(LF_LED_Pin, OUTPUT);
   pinMode(MM_LED_Pin, OUTPUT);
   pinMode(HEEL_LED_Pin, OUTPUT);
+  //----------------------------------
+  // MPU6050
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  // Serial.println("Adafruit MPU6050 test!");
+
+  // Try to initialize!
+  if (!mpu.begin()) {
+    Serial.println("Failed to find MPU6050 chip");
+    while (1) {
+      delay(10);
+    }
+  }
+  // Serial.println("MPU6050 Found!");
+
+  //setupt motion detection
+  mpu.setHighPassFilter(MPU6050_HIGHPASS_0_63_HZ);
+  mpu.setMotionDetectionThreshold(1);
+  mpu.setMotionDetectionDuration(20);
+  mpu.setInterruptPinLatch(true);	// Keep it latched.  Will turn off when reinitialized.
+  mpu.setInterruptPinPolarity(true);
+  mpu.setMotionInterrupt(true);
+
+  Serial.println("");
+  delay(100);
 }
 
 void loop() { //prints by : HEEL, Medial Mid-foot, Medial forefoot, lateral forefoot
@@ -71,14 +105,25 @@ void loop() { //prints by : HEEL, Medial Mid-foot, Medial forefoot, lateral fore
   if (HEEL < 10){ // did this because my force sensor keeps printing numbers from 1-4
     HEEL = 0;
     Serial.print(HEEL);
-    Serial.println(" ");
+    Serial.print(" ");
   }
   else {
     Serial.print(HEEL);
-    Serial.println(" ");
+    Serial.print(" ");
   }
   // Serial.print(HEEL);
 
+  if(mpu.getMotionInterruptStatus()) {
+    /* Get new sensor events with the readings */
+    sensors_event_t a, g, temp;
+    mpu.getEvent(&a, &g, &temp);
+    Serial.print(a.acceleration.x);
+    Serial.println(" ");
+  }
+  else{
+    Serial.print(0);
+    Serial.println(" ");
+  }
   // MFP = ((MM + MF) * 100)/(MM + MF + LF + HEEL + 0.001);
   // Serial.println(" ");
   // // Serial.print()
