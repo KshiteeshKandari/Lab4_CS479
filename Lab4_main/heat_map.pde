@@ -75,13 +75,34 @@ void drawHeatmapPage(String current) {
   }
 }
 
+//void drawCircularHeatmap(int[] sensorValues, float centerX, float centerY, int diameter) {
+//  noStroke();
+//  for (int i = sensorValues.length - 1; i >= 0; i--) {
+//    float normalizedValue = map(sensorValues[i], minFSRValue, maxFSRValue, 0, 1);
+//    float currentDiameter = map(i, 0, sensorValues.length, 0, diameter);
+//    color heatColor = lerpColor(color(255, 165, 0), color(255, 0, 0), normalizedValue);
+//    fill(heatColor);
+//    ellipse(centerX, centerY, currentDiameter, currentDiameter);
+//  }
+//}
+
 void drawCircularHeatmap(int[] sensorValues, float centerX, float centerY, int diameter) {
   noStroke();
-  for (int i = sensorValues.length - 1; i >= 0; i--) {
-    float normalizedValue = map(sensorValues[i], minFSRValue, maxFSRValue, 0, 1);
-    float currentDiameter = map(i, 0, sensorValues.length, 0, diameter);
-    color heatColor = lerpColor(color(255, 165, 0), color(255, 0, 0), normalizedValue);
-    fill(heatColor);
+  color limeGreen = color(50, 205, 50); // Lime green color
+  color red = color(255, 0, 0); // Red color
+  int highestValue = max(sensorValues); // Find the max value for the most intense part of the gradient
+
+  // Cap for the diameter of the red center
+  float maxCenterDiameter = diameter / 10; // For example, let's say we don't want it to be more than a quarter of the total diameter
+  float normalizedValue = map(highestValue, minFSRValue, maxFSRValue, 0, maxCenterDiameter);
+
+  // Draw concentric circles from the center
+  for (int i = diameter / 2; i >= 0; i--) {
+    float lerpFactor = map(i, 0, diameter / 2, 0, 1); // Factor for interpolating the color
+    float currentDiameter = map(i, 0, diameter / 2, normalizedValue, diameter);
+    color currentColor = lerpColor(red, limeGreen, lerpFactor);
+
+    fill(currentColor);
     ellipse(centerX, centerY, currentDiameter, currentDiameter);
   }
 }
