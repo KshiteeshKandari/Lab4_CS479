@@ -1,4 +1,4 @@
-int currentPage = 3; // 1 for input page, 2 for heatmap page
+int currentPage = 3; // 1 for input page, 2 for heatmap page, 4 for special/running page
 PImage home_icon;
 
 void setup() {
@@ -6,6 +6,7 @@ void setup() {
   textAlign(LEFT, CENTER);
   input_setup();
   heat_map_setup();
+  running_setup();
   home_setup();
 }
 
@@ -20,6 +21,9 @@ void draw() {
   else if (currentPage == 3){
     home_draw();
   }
+  else if (currentPage == 4){
+    drawRunningPage();
+  }
 }
 
 
@@ -33,6 +37,10 @@ void mousePressed() {
     // Check if click is within the bounds of the heat map icon
     else if (mouseX >= 340 && mouseX <= 440 && mouseY >= (height/3+40) && mouseY <= (height/3+140)) {
       currentPage = 2; // Heat map icon clicked
+    }
+    // Check if click is within the bounds of the running icon
+    else if(mouseX >= 580 && mouseX <= 680 && mouseY >= (height/3+40) && mouseY <= (height/3+140)){
+      currentPage = 4;
     }
   }
   else if (currentPage == 1){
