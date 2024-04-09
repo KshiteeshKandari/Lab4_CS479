@@ -5,6 +5,9 @@ int activeField = -1;
 PImage input_bg;
 PImage left_arrow;
 PImage left_arrow2;
+int stepCount = 0;
+
+int Cade= 0;
 
 
 void input_setup(){
@@ -32,8 +35,15 @@ void drawInputPage() {
     rect(200, 50 + i * 50, 200, 30);
     fill(0);
     text(inputPrompts[i] + ":", 50, 65 + i * 50);
-    text(inputValues[i], 210, 65 + i * 50);
+    text(inputValues[i], 210, 65 + i * 50);   
+    
   }
+if (HEEL > 550 && HEEL < 580   && MF == 0 && MM == 0 && LF == 0){
+  stepCount += 2;
+}
+
+//while(MF > 0)
+  
   
   // Instructions for the user
   text("Click on a field to enter the corresponding data. Press the icon to go to heat maps.", 50, 300);
@@ -54,6 +64,10 @@ void drawProceedButton() {
   
   if (allFilled) {
     image(left_arrow2,65,345,50,50);
+    Cade = 264/ int (inputValues[0]);
+    text("Your Cadence is: "+ Cade, width/2+200,400);
+    text("Yor Step Count is: "+ stepCount, width/2+200,500);
+    
     //text("Proceed", 55, 365);
   } else {
     image(left_arrow,65,345,50,50);
