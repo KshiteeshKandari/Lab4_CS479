@@ -1,6 +1,9 @@
+import processing.serial.*;
+
 int currentPage = 3; // 1 for input page, 2 for heatmap page, 4 for special/running page
 PImage home_icon;
 
+Serial myPort;
 void setup() {
   size(800, 600);
   textAlign(LEFT, CENTER);
@@ -53,7 +56,7 @@ void mousePressed() {
           inputFieldsSelected[i] = false;
         }
       }
-  
+    
       // Check if 'Proceed' button is pressed and all fields are filled
       if (mouseX >= 50 && mouseX <= 150 && mouseY >= 350 && mouseY <= 380) {
         boolean allFilled = true;
@@ -73,4 +76,17 @@ void mousePressed() {
   if (mouseX >= 750 && mouseX <= 800 && mouseY >= 10 && mouseY <= 60) {
     currentPage = 3; // Home icon clicked
   }
+}
+
+
+void serialEvent(Serial myPort){
+  String tempVal = myPort.readStringUntil('\n');
+  if (tempVal != null){
+    String[] values = split(tempVal, ' ');
+    int MF = int(values[0]);
+    int LF = int(values[1]);
+    int MM = int(values[2]);
+    int HEEL = int(values[3]);
+  }
+  
 }

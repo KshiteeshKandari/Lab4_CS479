@@ -1,6 +1,6 @@
 
-int minFSRValue = 60; // Minimum expected value for FSR input
-int maxFSRValue = 140; // Maximum expected value for FSR input
+int minFSRValue = 0; // Minimum expected value for FSR input
+int maxFSRValue = 1000; // Maximum expected value for FSR input
 int heatmapDiameter; // Diameter of each individual heatmap
 int[][] fsrValues; // 2D Array to store FSR values for each sensor
 ArrayList<ArrayList<Integer>> fsrHistory; // To store a history of values for drawing the graphs
