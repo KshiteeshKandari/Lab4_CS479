@@ -34,7 +34,15 @@ void drawHeatmapPage(String current) {
   textAlign(CENTER, TOP);
   fill(255);
   textSize(20);
+  
+  fill(0);
   text(current, width / 2, 10); 
+  fill(0);
+  if (Moving == 0){
+    text("You are Standing", width / 2, height-50);
+  }
+  else{text("You are Moving", width / 2, height-50);}
+  noFill();
 
   // Update fsrValues with actual sensor readings
   fsrValues[0][fsrValues[0].length - 1] = MF; // Most recent MF value

@@ -8,6 +8,7 @@ String current;
 int currentPage = 3; // 1 for input page, 2 for heatmap page, 4 for special/running page
 PImage home_icon;
 
+
 Serial myPort;
 void setup() {
   String portName = Serial.list()[1];
