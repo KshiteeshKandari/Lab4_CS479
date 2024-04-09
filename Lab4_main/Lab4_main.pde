@@ -3,6 +3,7 @@ int MF;
 int LF;
 int MM;
 int HEEL;
+float Moving;
 String current;
 int currentPage = 3; // 1 for input page, 2 for heatmap page, 4 for special/running page
 PImage home_icon;
@@ -29,12 +30,26 @@ void serialEvent(Serial myPort){
     LF = int(values[1]);
     MM = int(values[2]);
     HEEL = int(values[3]);
+    Moving = float(values[4]);
     
     float MFP = ((MM + MF) * 100)/(MM + MF + LF + HEEL + 0.001);
     println(MFP); 
     profile(MFP);
   }
 }
+
+
+
+Boolean walking(float Moving){
+  if (Moving == 0){
+  return false;
+  }
+  else {
+  return true;
+  }
+}
+
+
 
 void profile(float x){
   if (x <= 5){
