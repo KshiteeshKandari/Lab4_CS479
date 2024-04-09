@@ -34,7 +34,7 @@ void serialEvent(Serial myPort){
     Moving = float(values[4]);
     
     float MFP = ((MM + MF) * 100)/(MM + MF + LF + HEEL + 0.001);
-    println(MFP); 
+    //println(MFP); 
     profile(MFP);
   }  
 }
