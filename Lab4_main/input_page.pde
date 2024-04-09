@@ -8,6 +8,10 @@ PImage left_arrow2;
 int stepCount = 0;
 
 int Cade= 0;
+int threshold = 650; // Replace with the value above which a step is detected. This needs to be calibrated.
+long lastStepTime = 0; // To prevent counting multiple steps for the same foot strike
+int debounceTime = 1000;// Milliseconds to wait before counting a new step to debounce the step count
+boolean stepDetected = false;
 
 
 void input_setup(){
@@ -38,9 +42,20 @@ void drawInputPage() {
     text(inputValues[i], 210, 65 + i * 50);   
     
   }
-if (HEEL > 550 && HEEL < 580   && MF == 0 && MM == 0 && LF == 0){
-  stepCount += 2;
-}
+//if (HEEL > 550 && HEEL < 580   && MF == 0 && MM == 0 && LF == 0){
+//  stepCount += 2;
+//}
+if (HEEL > threshold && !stepDetected) {
+    if (millis() - lastStepTime > debounceTime) { // Debounce to prevent multiple counts for one step
+      stepCount++; // Increment the step count
+      print("Step detected!");
+      print("Total steps: ");
+      stepDetected = true; // Set the step detected flag
+      lastStepTime = millis(); // Update the last step time
+    }
+  } else if (HEEL < threshold) {
+    stepDetected = false; // Reset the step detected flag when the value falls below threshold
+  }
 
 //while(MF > 0)
   
