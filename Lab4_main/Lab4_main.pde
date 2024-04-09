@@ -1,4 +1,8 @@
 import processing.serial.*;
+int MF;
+int LF;
+int MM;
+int HEEL;
 
 int currentPage = 3; // 1 for input page, 2 for heatmap page, 4 for special/running page
 PImage home_icon;
@@ -83,10 +87,10 @@ void serialEvent(Serial myPort){
   String tempVal = myPort.readStringUntil('\n');
   if (tempVal != null){
     String[] values = split(tempVal, ' ');
-    int MF = int(values[0]);
-    int LF = int(values[1]);
-    int MM = int(values[2]);
-    int HEEL = int(values[3]);
+    MF = int(values[0]);
+    LF = int(values[1]);
+    MM = int(values[2]);
+    HEEL = int(values[3]);
   }
   
 }

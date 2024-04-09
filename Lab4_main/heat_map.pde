@@ -31,12 +31,23 @@ void drawHeatmapPage() {
   background(img);
   image(home_icon,750,10,50,50);
 
+
+  // Update fsrValues with actual sensor readings
+  fsrValues[0][fsrValues[0].length - 1] = MF; // Most recent MF value
+  fsrValues[1][fsrValues[1].length - 1] = LF; // Most recent LF value
+  fsrValues[2][fsrValues[2].length - 1] = MM; // Most recent MM value
+  fsrValues[3][fsrValues[3].length - 1] = HEEL; // Most recent HEEL value
+  
+  //
   // Simulate live FSR values updating for each sensor
   for (int j = 0; j < fsrValues.length; j++) {
     int avgValue = 0; // Calculate average for a smoother graph
-    for (int i = 0; i < fsrValues[j].length; i++) {
-      fsrValues[j][i] = (int)random(minFSRValue, maxFSRValue + 1); // Random values within the expected range
-      avgValue += fsrValues[j][i];
+    //for (int i = 0; i < fsrValues[j].length; i++) {
+    //  //fsrValues[j][i] = (int)random(minFSRValue, maxFSRValue + 1); // Random values within the expected range
+    //  avgValue += fsrValues[j][i];
+    //}
+    for (int value : fsrValues[j]) {
+      avgValue += value;
     }
     avgValue /= fsrValues[j].length;
     fsrHistory.get(j).add(avgValue); // Add average value to history
