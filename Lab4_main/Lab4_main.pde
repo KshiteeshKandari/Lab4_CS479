@@ -9,7 +9,7 @@ PImage home_icon;
 
 Serial myPort;
 void setup() {
-  String portName = Serial.list()[0];
+  String portName = Serial.list()[1];
   print(Serial.list());
   myPort = new Serial(this, portName, 115200);
   myPort.bufferUntil('\n');

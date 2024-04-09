@@ -13,6 +13,9 @@ long lastStepTime = 0; // To prevent counting multiple steps for the same foot s
 int debounceTime = 1000;// Milliseconds to wait before counting a new step to debounce the step count
 boolean stepDetected = false;
 
+float startTime; // When the first step was taken
+boolean isMeasuring = false; // Whether cadence measurement is in progress
+
 
 void input_setup(){
   home_icon = loadImage("home.png");
@@ -57,7 +60,24 @@ if (HEEL > threshold && !stepDetected) {
   } else if (HEEL < threshold) {
     stepDetected = false; // Reset the step detected flag when the value falls below threshold
   }
+  
 
+if (isMeasuring) {
+    // Calculate the elapsed time in minutes
+    float elapsedTime = (millis() - startTime) / 60000.0;
+    float cadence = 0;
+    
+    if (elapsedTime > 0) { // Prevent division by zero
+      // Calculate the current cadence
+      cadence = stepCount / elapsedTime;
+    }
+
+    //text("Cadence: " + cadence + " steps/min", width / 2, height / 2);
+    text("Your Cadence is: "+ cadence, width/2+200,400);
+ }
+  //} else {
+  //  text("Press 's' to start", width / 2, height / 2);
+  //}
 //while(MF > 0)
   
   
@@ -79,9 +99,11 @@ void drawProceedButton() {
   }
   
   if (allFilled) {
+    isMeasuring = true;
+    startTime = millis();
     image(left_arrow2,65,345,50,50);
     Cade = 264/ int (inputValues[0]);
-    text("Your Cadence is: "+ Cade, width/2+200,400);
+    //text("Your Cadence is: "+ Cade, width/2+200,400);
     text("Yor Step Count is: "+ stepCount, width/2+200,500);
     
     //text("Proceed", 55, 365);
