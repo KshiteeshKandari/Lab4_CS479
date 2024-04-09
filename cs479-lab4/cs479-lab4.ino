@@ -21,6 +21,8 @@ int MF;
 int LF;
 int MM;
 int HEEL;
+float cool;
+int zero;
 float MFP;
 
 // change these 4 depending on pins used   (Tyler: 3,5,9,11)
@@ -67,7 +69,6 @@ void setup() {
   mpu.setInterruptPinPolarity(true);
   mpu.setMotionInterrupt(true);
 
-  Serial.println("");
   delay(100);
 }
 
@@ -117,11 +118,13 @@ void loop() { //prints by : HEEL, Medial Mid-foot, Medial forefoot, lateral fore
     /* Get new sensor events with the readings */
     sensors_event_t a, g, temp;
     mpu.getEvent(&a, &g, &temp);
-    Serial.print(a.acceleration.x);
+    cool = a.acceleration.x;
+    Serial.print(cool);
     Serial.println(" ");
   }
   else{
-    Serial.print(0);
+    zero = 0;
+    Serial.print(zero);
     Serial.println(" ");
   }
   // MFP = ((MM + MF) * 100)/(MM + MF + LF + HEEL + 0.001);
